@@ -49,8 +49,8 @@ Examples include the Bitcoin.com wallet, Blockchain.info, or Electron Cash
 * **PLEASE NOTE** - Every effort is made to learn and follow best practices in the development of this software.
 However, this code should be considered academic/experimental.
 **Use at your own risk.**
-* Always store your seed phrase in a secure location. Write it down and keep it somewhere safe, or use an encrypted password manager
-* This tool does not require any network connectivity. Consider running offline to mitigate eavesdropping
-* This tool uses Python's os.urandom to generate entropy for the seed. The underlying OS implementation determiens the level of security.
+* Always store your seed phrase in a secure location. Write it down and keep it somewhere safe, or use an encrypted password manager.
+* This tool does not require any network connectivity. Consider running offline to mitigate eavesdropping.
+* This tool uses Python's os.urandom to generate entropy for the seed. The underlying OS implementation determines the level of security.
 (/dev/urandom on Unix-based systems, CryptGenRandom() on Windows). It may be best to avoid using fresh machines or VM's as insufficient
 entropy may be used to generate a less-secure seed. 
