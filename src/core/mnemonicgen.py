@@ -17,6 +17,8 @@
 import os
 import hashlib
 import bitstring
+import argparse
+import sys
 
 WORDS_PATH = "bip39_words.txt"
 DEF_ENTROPY_BITS = 128
@@ -93,16 +95,41 @@ def map_words(checksummed_entropy, words):
 
 	return mnemonic
 
-# This function prints out the mnemonic list in a simple format
-def print_mnemonic(mnemonic):
+# This function provides a simple format for the mnemonic list
+def format_mnemonic(mnemonic):
 
+	formatted_mnemonic = ""
 	count = 1
 	for word in mnemonic:
-		print "%d: %s" % (count, word)
+		formatted_mnemonic += "%d: %s\n" % (count, word)
 		count += 1
+
+	return formatted_mnemonic.rstrip()
+
+# This function prints out the formatted mnemonic list 
+def print_mnemonic(formatted_mnemonic, output_file=None):
+
+	# Write the mnemonic to the desired output stream
+	if output_file:
+		with open(output_file, "w") as out:
+			out.write(formatted_mnemonic)
+	else:
+		print formatted_mnemonic
+
+# This function handles command line arguments
+def get_args():
+
+	parser = argparse.ArgumentParser(description="Generate a BIP39 menmonic")
+
+	parser.add_argument("-o", "--output_file", help="Write the mnemonic to the specified file")
+
+	return parser.parse_args()
 
 # This is the main entry point for the program
 if __name__ == "__main__":
+
+        # Process command-line arguments
+	args = get_args()
 
 	# Read the word list from file
 	words = read_wordlist()
@@ -111,6 +138,9 @@ if __name__ == "__main__":
 	entropy = gen_entropy(DEF_ENTROPY_BITS)
 	checksummed_entropy = gen_checksum_entropy(entropy, DEF_ENTROPY_BITS)
 
-	# Generate and print the mnemonic
+	# Generate the mnemonic
 	mnemonic = map_words(checksummed_entropy, words)
-	print_mnemonic(mnemonic)
+
+	# Format and print the result
+	formatted_mnemonic = format_mnemonic(mnemonic)
+	print_mnemonic(formatted_mnemonic, output_file=args.output_file)
