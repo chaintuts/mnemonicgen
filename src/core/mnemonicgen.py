@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 # This file contains code that generates a BIP39 mnemonic phrase usable for
 # Bitcoin Cash or Bitcoin Core HD wallet generation
@@ -42,7 +42,7 @@ def read_wordlist():
 #
 def gen_entropy(size_bits):
 
-	entropy = os.urandom(size_bits / 8)
+	entropy = os.urandom(size_bits // 8)
 
 	return entropy
 
@@ -61,10 +61,10 @@ def gen_checksum_entropy(entropy, size_bits):
 
 	# Calculate the number of bits for the checksum
 	# According to BIP39, checksum bits = entropy bits / 32
-	num_checksum_bits = size_bits / 32
+	num_checksum_bits = size_bits // 32
 	
 	# Append the checksum to the entropy
-	entropy_bits = bitstring.BitArray("0x" + entropy.encode("hex"))
+	entropy_bits = bitstring.BitArray("0x" + entropy.hex())
 	checksummed_bits = entropy_bits + hash_bits[0:num_checksum_bits]
 
 	return checksummed_bits
@@ -78,7 +78,7 @@ def gen_checksum_entropy(entropy, size_bits):
 def map_words(checksummed_entropy, words):
 
 	# Calculate the number of sections to divide the entropy into
-	num_chunks = len(checksummed_entropy) / 11
+	num_chunks = len(checksummed_entropy) // 11
 
 	# Generate the mnemonic word list by mapping each
 	# chunk to the appropriate word in the dictionary
@@ -101,7 +101,7 @@ def format_mnemonic(mnemonic):
 	formatted_mnemonic = ""
 	count = 1
 	for word in mnemonic:
-		formatted_mnemonic += "%d: %s\n" % (count, word)
+		formatted_mnemonic += "{}: {}\n".format(count, word)
 		count += 1
 
 	return formatted_mnemonic.rstrip()
@@ -114,7 +114,7 @@ def print_mnemonic(formatted_mnemonic, output_file=None):
 		with open(output_file, "w") as out:
 			out.write(formatted_mnemonic)
 	else:
-		print formatted_mnemonic
+		print(formatted_mnemonic)
 
 # This function handles command line arguments
 def get_args():
